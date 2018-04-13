@@ -1,3 +1,4 @@
+#define NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION
 
 #include <Python.h>
 #include <numpy/arrayobject.h>
@@ -6,16 +7,24 @@
 // Forward function declaration.
 static PyObject *evolve(PyObject *self, PyObject *args); 
 
-// Boilerplate: function list.
+// Boilerplate: method list.
 static PyMethodDef methods[] = {
   { "evolve", evolve, METH_VARARGS, "Doc string."},
   { NULL, NULL, 0, NULL } /* Sentinel */
 };
 
+static struct PyModuleDef simple1module =
+  {
+    PyModuleDef_HEAD_INIT, "simple2", NULL, -1, methods
+  };
+
+
 // Boilerplate: Module initialization.
-PyMODINIT_FUNC initsimple2(void) {
-  (void) Py_InitModule("simple2", methods);
+PyMODINIT_FUNC PyInit_simple2(void) {
+  PyObject *mod = NULL;
   import_array();
+  mod = PyModule_Create(&simple1module);
+  return mod;
 }
 
 /*****************************************************************************
