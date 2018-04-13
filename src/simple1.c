@@ -1,4 +1,6 @@
 
+#define NPY_NO_DEPRECATED_API NPY_1_7_API_VERSION
+
 #include <Python.h>
 #include <numpy/arrayobject.h>
 #include <math.h>
@@ -12,10 +14,18 @@ static PyMethodDef methods[] = {
   { NULL, NULL, 0, NULL } /* Sentinel */
 };
 
+static struct PyModuleDef simple1module =
+  {
+    PyModuleDef_HEAD_INIT, "simple1", NULL, -1, methods
+  };
+
+
 // Boilerplate: Module initialization.
-PyMODINIT_FUNC initsimple1(void) {
-  (void) Py_InitModule("simple1", methods);
+PyMODINIT_FUNC PyInit_simple1(void) {
+  PyObject *mod = NULL;
   import_array();
+  mod = PyModule_Create(&simple1module);
+  return mod;
 }
 
 /*****************************************************************************
